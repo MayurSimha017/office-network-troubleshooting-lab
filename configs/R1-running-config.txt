@@ -1,0 +1,59 @@
+
+! Router R1 - Small Office Network
+! Cisco 2911 - Router-on-a-stick configuration
+
+enable
+configure terminal
+
+hostname R1
+
+! Physical interface
+interface GigabitEthernet0/0
+ no shutdown
+ exit
+
+! IT VLAN 10
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+ exit
+
+! HR VLAN 20
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+ exit
+
+! Server VLAN 30
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.30.1 255.255.255.0
+ exit
+
+! DHCP excluded address ranges
+ip dhcp excluded-address 192.168.10.1 192.168.10.20
+ip dhcp excluded-address 192.168.20.1 192.168.20.20
+ip dhcp excluded-address 192.168.30.1 192.168.30.20
+
+! DHCP pool for IT
+ip dhcp pool IT_POOL
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 192.168.30.10
+ exit
+
+! DHCP pool for HR
+ip dhcp pool HR_POOL
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ dns-server 192.168.30.10
+ exit
+
+! DHCP pool for Servers
+ip dhcp pool SERVER_POOL
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.1
+ dns-server 192.168.30.10
+ exit
+
+end

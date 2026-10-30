@@ -1,0 +1,53 @@
+
+! Switch S1 - Small Office Network
+! Cisco 2960 - VLAN and trunk configuration
+
+enable
+configure terminal
+
+hostname S1
+
+! Create departmental VLANs
+vlan 10
+ name IT
+ exit
+
+vlan 20
+ name HR
+ exit
+
+vlan 30
+ name SERVERS
+ exit
+
+! IT Department - PC-IT
+interface FastEthernet0/2
+ switchport mode access
+ switchport access vlan 10
+ exit
+
+! IT Department - PC-IT2
+interface FastEthernet0/3
+ switchport mode access
+ switchport access vlan 10
+ exit
+
+! HR Department - PC-HR
+interface FastEthernet0/4
+ switchport mode access
+ switchport access vlan 20
+ exit
+
+! Server
+interface FastEthernet0/5
+ switchport mode access
+ switchport access vlan 30
+ exit
+
+! Trunk to Router R1
+interface GigabitEthernet0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+ exit
+
+end
